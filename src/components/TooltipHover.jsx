@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 
 function TooltipHover(props) {
-  const [showTooltip, setShowTooltip] = useState(false);
   const dob = props.dateOfBirth;
   const gridValue = props.gridValue;
   let startDate = 0;
@@ -34,7 +33,7 @@ function TooltipHover(props) {
         >
           <div
             key={props.index}
-            className="w-[15px] h-[15px] bg-blue-400 border"
+            className="w-[15px] h-[15px] bg-green-400 border"
           ></div>
         </Tooltip>
       ) : (
