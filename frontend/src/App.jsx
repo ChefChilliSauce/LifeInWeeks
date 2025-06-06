@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DobPopUp from "./components/DOBPopUp";
 import Grid from "./components/Grid";
+import LoginSignup from "./components/LoginSignup";
+import Header from "./components/Header";
 
 function App() {
   const [weeks, setWeeks] = useState(0);
@@ -15,8 +17,9 @@ function App() {
 
   return (
     <>
-      <DobPopUp onConfirm={CompletedWeeks} onConfirmDate={DateOfBirth} />
-      <Grid gridColor={weeks} userDateOfBirth={date} />
+      <LoginSignup />
+      {/* <DobPopUp onConfirm={CompletedWeeks} onConfirmDate={DateOfBirth} />
+      <Grid gridColor={weeks} userDateOfBirth={date} /> */}
     </>
   );
 }
