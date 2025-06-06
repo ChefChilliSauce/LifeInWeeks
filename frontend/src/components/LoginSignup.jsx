@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import LoginSignupButtons from "./LoginSigupButtons";
 import LoginSignupForm from "./LoginSignupForm";
 import Stack from "@mui/material/Stack";
+import axios from "axios";
 
-function LoginSignup() {
+function LoginSignup(props) {
   const [showPassword, setShowPassword] = useState(false);
   const [homepage, setHomepage] = useState(true);
   const [pageLogin, setPageLogin] = useState(false);
   const [passwordField, setPasswordField] = useState(false);
   const [usernameField, setUsernameField] = useState(true);
   const [usernameFieldErrorEmpty, setUsernameFieldErrorEmpty] = useState(false);
+  const [passwordFieldErrorEmpty, setPasswordFieldErrorEmpty] = useState(false);
+  const [passwordStatus, setPasswordStatus] = useState(true);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -43,13 +46,107 @@ function LoginSignup() {
     setPassword("");
   }
 
-  function HandleContinueClick() {
+  function HandleProceedLoginClick() {
+    if (password.length >= 0 && password.length < 8) {
+      setPasswordFieldErrorEmpty(true);
+    } else {
+      axios
+        .post("http://localhost:3000/login", {
+          username: username,
+          password: password,
+        })
+        .then(function (response) {
+          if (response.data.exists) {
+            props.confirm(true);
+          } else {
+            setPasswordStatus(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  function HandleContinueLoginClick() {
     if (username.length == 0) {
       setUsernameFieldErrorEmpty(true);
     } else {
-      setPasswordField(true);
-      setUsernameField(false);
-      setUsernameFieldErrorEmpty(false);
+      axios
+        .post("http://localhost:3000/checkUserName", {
+          username: username,
+        })
+        .then(function (response) {
+          if (!response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(false);
+          } else if (response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(true);
+          } else {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  function HandleProceedSignupClick() {
+    if (password.length >= 0 && password.length < 8) {
+      setPasswordFieldErrorEmpty(true);
+    } else {
+      axios
+        .post("http://localhost:3000/signup", {
+          username: username,
+          password: password,
+        })
+        .then(function (response) {
+          if (response.data.exists) {
+            props.confirm(true);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+  }
+
+  function HandleContinueSignupClick() {
+    if (username.length == 0) {
+      setUsernameFieldErrorEmpty(true);
+    } else {
+      axios
+        .post("http://localhost:3000/checkUserName", {
+          username: username,
+        })
+        .then(function (response) {
+          if (response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(true);
+          } else if (!response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(false);
+          } else {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 
@@ -72,50 +169,59 @@ function LoginSignup() {
           </Stack>
         </div>
       ) : null}
-      {pageLogin && !homepage ? (
-        <LoginSignupForm
-          heading={"Welcome back"}
-          paragraph={"Dont have an account?"}
-          details={"Sign up"}
-          isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
-          isUsernameField={usernameField}
-          HandleEditButtonClick={HandleLoginClick}
-          HandleUsernameFieldChange={HandleUsernameChange}
-          username={username}
-          activeUserField={"userField"}
-          activePassField={"passField"}
-          ButtonText={"Continue"}
-          HandleContinueButtonClick={HandleContinueClick}
-          isPasswordField={passwordField}
-          isShowPassword={showPassword}
-          handleClickShowPasswordButton={handleClickShowPassword}
-          HandlePasswordFieldChange={HandlePasswordChange}
-          password={password}
-          HandleChangeButtonClick={HandleSignupClick}
-        />
-      ) : null}
-      {!pageLogin && !homepage ? (
-        <LoginSignupForm
-          heading={"Create an account"}
-          paragraph={"Already have an account?"}
-          details={"Log in"}
-          isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
-          isUsernameField={usernameField}
-          HandleEditButtonClick={HandleSignupClick}
-          HandleUsernameFieldChange={HandleUsernameChange}
-          username={username}
-          activeUserField={"userField"}
-          activePassField={"passField"}
-          ButtonText={"Continue"}
-          HandleContinueButtonClick={HandleContinueClick}
-          isPasswordField={passwordField}
-          isShowPassword={showPassword}
-          handleClickShowPasswordButton={handleClickShowPassword}
-          HandlePasswordFieldChange={HandlePasswordChange}
-          password={password}
-          HandleChangeButtonClick={HandleLoginClick}
-        />
-      ) : null}
+      <div className="min-h-screen flex flex-col items-center justify-center">
+        {pageLogin && !homepage ? (
+          <LoginSignupForm
+            heading1={"Welcome back"}
+            heading2={"Enter your password"}
+            paragraph={"Dont have an account?"}
+            details={"Sign up"}
+            isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
+            isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
+            isPasswordStatus={passwordStatus}
+            isUsernameField={usernameField}
+            HandleEditButtonClick={HandleLoginClick}
+            HandleUsernameFieldChange={HandleUsernameChange}
+            username={username}
+            activeUserField={"userField"}
+            activePassField={"passField"}
+            ButtonText={"Continue"}
+            HandleContinueButtonClick={HandleContinueLoginClick}
+            HandleProceedButtonClick={HandleProceedLoginClick}
+            isPasswordField={passwordField}
+            isShowPassword={showPassword}
+            handleClickShowPasswordButton={handleClickShowPassword}
+            HandlePasswordFieldChange={HandlePasswordChange}
+            password={password}
+            HandleChangeButtonClick={HandleSignupClick}
+          />
+        ) : null}
+        {!pageLogin && !homepage ? (
+          <LoginSignupForm
+            heading1={"Create an account"}
+            heading2={"Create an password"}
+            paragraph={"Already have an account?"}
+            details={"Log in"}
+            isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
+            isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
+            isUsernameField={usernameField}
+            HandleEditButtonClick={HandleSignupClick}
+            HandleUsernameFieldChange={HandleUsernameChange}
+            username={username}
+            activeUserField={"userField"}
+            activePassField={"passField"}
+            ButtonText={"Continue"}
+            HandleContinueButtonClick={HandleContinueSignupClick}
+            HandleProceedButtonClick={HandleProceedSignupClick}
+            isPasswordField={passwordField}
+            isShowPassword={showPassword}
+            handleClickShowPasswordButton={handleClickShowPassword}
+            HandlePasswordFieldChange={HandlePasswordChange}
+            password={password}
+            HandleChangeButtonClick={HandleLoginClick}
+          />
+        ) : null}
+      </div>
     </>
   );
 }

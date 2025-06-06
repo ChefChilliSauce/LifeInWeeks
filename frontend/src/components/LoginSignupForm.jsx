@@ -7,7 +7,7 @@ import LoginSignupContinueButton from "./LoginSignupContinueButton";
 function LoginSignupForm(props) {
   return (
     <div className="select-none">
-      <h1>{props.heading}</h1>
+      <h1>{props.isPasswordField ? props.heading2 : props.heading1} </h1>
       <Box
         component="form"
         sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
@@ -26,6 +26,8 @@ function LoginSignupForm(props) {
           {props.isPasswordField ? (
             <InputTextField
               HandleContinueButtonClick={props.HandleContinueButtonClick}
+              isPasswordFieldErrorEmpty={props.isPasswordFieldErrorEmpty}
+              isPasswordStatus={props.isPasswordStatus}
               isPasswordField={props.isPasswordField}
               isShowPassword={props.isShowPassword}
               handleClickShowPasswordButton={
@@ -38,10 +40,17 @@ function LoginSignupForm(props) {
           ) : null}
         </Stack>
         <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
-          <LoginSignupContinueButton
-            ButtonText={props.ButtonText}
-            HandleContinueButtonClick={props.HandleContinueButtonClick}
-          />
+          {props.isPasswordField ? (
+            <LoginSignupContinueButton
+              ButtonText={props.ButtonText}
+              HandleProceedButtonClick={props.HandleProceedButtonClick}
+            />
+          ) : (
+            <LoginSignupContinueButton
+              ButtonText={props.ButtonText}
+              HandleProceedButtonClick={props.HandleContinueButtonClick}
+            />
+          )}
         </Stack>
         <p>
           {props.paragraph}{" "}

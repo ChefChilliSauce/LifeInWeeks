@@ -5,7 +5,9 @@ function LoginSignupContinueButton(props) {
   return (
     <Button
       onClick={() => {
-        props.HandleContinueButtonClick();
+        {
+          props.HandleProceedButtonClick();
+        }
       }}
       variant="contained"
       sx={{

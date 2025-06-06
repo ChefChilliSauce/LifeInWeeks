@@ -45,6 +45,20 @@ function InputTextField(props) {
       ) : null}
       {props.activePassField == "passField" ? (
         <TextField
+          error={
+            props.isPasswordStatus
+              ? props.isPasswordFieldErrorEmpty
+                ? true
+                : null
+              : true
+          }
+          helperText={
+            props.isPasswordStatus
+              ? props.isPasswordFieldErrorEmpty
+                ? "Password must be atleast 8 chars"
+                : null
+              : "incorrect Password"
+          }
           type={props.isShowPassword ? "text" : "password"}
           InputProps={{
             endAdornment: (
