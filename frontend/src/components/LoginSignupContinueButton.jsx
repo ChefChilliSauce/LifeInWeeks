@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 function LoginSignupContinueButton(props) {
   return (
     <Button
+      type={props.type}
       onClick={() => {
         {
           props.HandleProceedButtonClick();

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
@@ -6,13 +6,31 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 
 function InputTextField(props) {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (
+      (props.activeUserField === "userField" && props.isUsernameField) ||
+      (props.activePassField === "passField" && props.isPasswordField)
+    ) {
+      inputRef.current?.focus();
+    }
+  }, [
+    props.activeUserField,
+    props.isUsernameField,
+    props.activePassField,
+    props.isPasswordField,
+  ]);
   return (
     <div>
       {props.activeUserField == "userField" ? (
         <TextField
+          inputRef={inputRef}
           error={props.isUsernameFieldErrorEmpty ? true : null}
           helperText={
-            props.isUsernameFieldErrorEmpty ? "Username cant be empty" : null
+            props.isUsernameFieldErrorEmpty
+              ? "Username cant be less than 6 chars"
+              : null
           }
           disabled={!props.isUsernameField ? true : null}
           InputProps={{
@@ -45,19 +63,14 @@ function InputTextField(props) {
       ) : null}
       {props.activePassField == "passField" ? (
         <TextField
-          error={
-            props.isPasswordStatus
-              ? props.isPasswordFieldErrorEmpty
-                ? true
-                : null
-              : true
-          }
+          inputRef={inputRef}
+          error={props.isPasswordStatus || props.isPasswordFieldErrorEmpty}
           helperText={
-            props.isPasswordStatus
-              ? props.isPasswordFieldErrorEmpty
-                ? "Password must be atleast 8 chars"
-                : null
-              : "incorrect Password"
+            props.isPasswordFieldErrorEmpty
+              ? "Password must be at least 8 chars"
+              : props.isPasswordStatus
+              ? "incorrect Password"
+              : null
           }
           type={props.isShowPassword ? "text" : "password"}
           InputProps={{

@@ -5,10 +5,16 @@ import InputTextField from "./InputTextField";
 import LoginSignupContinueButton from "./LoginSignupContinueButton";
 
 function LoginSignupForm(props) {
+  function handleFormSubmit(event) {
+    event.preventDefault();
+    props.handleFormSubmit();
+  }
+
   return (
     <div className="select-none">
       <h1>{props.isPasswordField ? props.heading2 : props.heading1} </h1>
       <Box
+        onSubmit={handleFormSubmit}
         component="form"
         sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
         noValidate
@@ -42,11 +48,13 @@ function LoginSignupForm(props) {
         <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
           {props.isPasswordField ? (
             <LoginSignupContinueButton
+              type="submit"
               ButtonText={props.ButtonText}
               HandleProceedButtonClick={props.HandleProceedButtonClick}
             />
           ) : (
             <LoginSignupContinueButton
+              type="submit"
               ButtonText={props.ButtonText}
               HandleProceedButtonClick={props.HandleContinueButtonClick}
             />
