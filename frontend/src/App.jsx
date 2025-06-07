@@ -1,8 +1,10 @@
 import { useState } from "react";
-import DobPopUp from "./components/DOBPopUp";
 import Grid from "./components/Grid";
 import LoginSignup from "./components/LoginSignup";
+import ProgressBar from "./components/ProgressBar";
+import Intro from "./components/Intro";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 function App() {
   const [dateToday, setDateToday] = useState(null);
@@ -12,6 +14,7 @@ function App() {
   const [gridDisplay, setGridDisplay] = useState(false);
   const [homepage, setHomepage] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [visibleDate, setVisibleDate] = useState(0);
 
   function VisibleHomePage(value) {
     setHomepage(value);
@@ -29,6 +32,12 @@ function App() {
     const differenceNoFloorone = Number(
       ((date - birth) / 1000 / 60 / 60 / 24 / 7).toFixed(2)
     );
+    const formatted = birth.toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
+    setVisibleDate(formatted);
     setDateToday(date);
     setDateBirth(birth);
     setDifference(differenceone);
@@ -41,7 +50,13 @@ function App() {
         <LoginSignup confirm={VisibleHomePage} currentUser={LogCurrentUser} />
       ) : null}
       {gridDisplay ? (
-        <Grid gridColor={difference} userDateOfBirth={dateBirth} />
+        <div>
+          <Header />
+          <Intro date={visibleDate} />
+          <ProgressBar difference={differenceNoFloor} />
+          <Grid gridColor={difference} userDateOfBirth={dateBirth} />
+          <Footer />
+        </div>
       ) : null}
     </>
   );
