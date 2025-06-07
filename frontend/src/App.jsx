@@ -5,6 +5,7 @@ import ProgressBar from "./components/ProgressBar";
 import Intro from "./components/Intro";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import SpecialDatesPopUp from "./components/SpecialDatesPopUp";
 
 function App() {
   const [dateToday, setDateToday] = useState(null);
@@ -15,6 +16,15 @@ function App() {
   const [homepage, setHomepage] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [visibleDate, setVisibleDate] = useState(0);
+  const [open, setOpen] = useState(false);
+
+  function OpenSetMilestone() {
+    setOpen(true);
+  }
+
+  function CloseSetMilestone() {
+    setOpen(false);
+  }
 
   function VisibleHomePage(value) {
     setHomepage(value);
@@ -51,10 +61,20 @@ function App() {
       ) : null}
       {gridDisplay ? (
         <div>
-          <Header />
+          <Header click={OpenSetMilestone} />
+          <SpecialDatesPopUp
+            open={open}
+            close={CloseSetMilestone}
+            data={currentUser}
+            newValue={LogCurrentUser}
+          />
           <Intro date={visibleDate} />
           <ProgressBar difference={differenceNoFloor} />
-          <Grid gridColor={difference} userDateOfBirth={dateBirth} />
+          <Grid
+            gridColor={difference}
+            userDateOfBirth={dateBirth}
+            data={currentUser}
+          />
           <Footer />
         </div>
       ) : null}

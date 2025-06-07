@@ -125,6 +125,36 @@ app.post("/setDOB", async (req, res) => {
   res.json({ user: userObj });
 });
 
+app.post("/AddSpecialMilestone", async (req, res) => {
+  const username = req.body.username;
+  const week = req.body.week;
+  const message = req.body.message;
+  const result = await db.query(
+    `UPDATE users
+   SET special_dates = 
+     CASE 
+       WHEN special_dates IS NULL THEN 
+         jsonb_build_array(jsonb_build_object('week', ($1)::int, 'message', ($2)::text))
+       ELSE 
+         special_dates || jsonb_build_array(jsonb_build_object('week', ($1)::int, 'message', ($2)::text))
+     END
+   WHERE username = $3
+   RETURNING *`,
+    [week, message, username]
+  );
+
+  const userObj = {
+    username: result.rows[0].username,
+    fullName: result.rows[0].name,
+    DOB: result.rows[0].full_date_of_birth,
+    date: result.rows[0].birth_day,
+    month: result.rows[0].birth_month,
+    year: result.rows[0].birth_year,
+    specialDates: result.rows[0].special_dates,
+  };
+  res.json({ user: userObj });
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

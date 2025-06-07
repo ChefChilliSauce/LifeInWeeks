@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import Tooltip from "@mui/material/Tooltip";
 
 function TooltipHover(props) {
-  const specialDates = [];
-
+  const specialDates = props.data.specialDates || [];
   const dob = props.dateOfBirth;
   const gridValue = props.gridValue;
   let startDate = 0;
@@ -19,7 +18,10 @@ function TooltipHover(props) {
   }
 
   function DaysCompleted() {
-    const milestone = specialDates.find((date) => date.week === props.index);
+    const milestone = specialDates.find(
+      (date) => parseInt(date.week) === props.index
+    );
+
     if (milestone != null) {
       return (
         <Tooltip

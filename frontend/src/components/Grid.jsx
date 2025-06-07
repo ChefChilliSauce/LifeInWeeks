@@ -22,6 +22,7 @@ function Grid(props) {
       >
         {arr.map((_, index) => (
           <TooltipHover
+            data={props.data}
             key={index}
             gridValue={gridValue}
             dateOfBirth={dob}
