@@ -5,9 +5,10 @@ import LoginSignup from "./components/LoginSignup";
 import Header from "./components/Header";
 
 function App() {
-  const [weeks, setWeeks] = useState(0);
-  const [date, setDate] = useState(0);
-  const [dateBirth, setDateBirth] = useState(0);
+  const [dateToday, setDateToday] = useState(null);
+  const [dateBirth, setDateBirth] = useState(null);
+  const [difference, setDifference] = useState(null);
+  const [differenceNoFloor, setDifferenceNoFloor] = useState(null);
   const [gridDisplay, setGridDisplay] = useState(false);
   const [homepage, setHomepage] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
@@ -18,29 +19,29 @@ function App() {
 
   function LogCurrentUser(value) {
     setCurrentUser(value);
+    SteadyDate(value);
   }
-  console.log(currentUser);
 
-  function GridLoader() {
-    const dateToday = new Date();
-    const dateBirth = new Date(
-      currentUser.year,
-      currentUser.month - 1,
-      currentUser.date
+  function SteadyDate(user) {
+    const date = new Date();
+    const birth = new Date(user.year, user.month - 1, user.date);
+    const differenceone = Math.floor((date - birth) / 1000 / 60 / 60 / 24 / 7);
+    const differenceNoFloorone = Number(
+      ((date - birth) / 1000 / 60 / 60 / 24 / 7).toFixed(2)
     );
-    const difference = Math.floor(
-      (dateToday - dateBirth) / 1000 / 60 / 60 / 24 / 7
-    );
-    setDateBirth(dateBirth);
-    setDate(dateToday);
-    setWeeks(difference);
+    setDateToday(date);
+    setDateBirth(birth);
+    setDifference(differenceone);
+    setDifferenceNoFloor(differenceNoFloorone);
     setGridDisplay(true);
   }
-
   return (
     <>
       {!homepage ? (
         <LoginSignup confirm={VisibleHomePage} currentUser={LogCurrentUser} />
+      ) : null}
+      {gridDisplay ? (
+        <Grid gridColor={difference} userDateOfBirth={dateBirth} />
       ) : null}
     </>
   );

@@ -50,10 +50,6 @@ function LoginSignup(props) {
     setPassword("");
   }
 
-  function LogCurrentUser(value) {
-    setCurrentUser(value);
-  }
-
   function HandleProceedLoginClick() {
     setPasswordFieldErrorEmpty(false);
     SetIncorrectPasswordError(false);
@@ -73,6 +69,9 @@ function LoginSignup(props) {
               setCurrentUser(response.data.user);
               setBlankPage(true);
               setDobPopUp(true);
+            } else {
+              props.currentUser(response.data.user);
+              props.confirm(true);
             }
           } else {
             SetIncorrectPasswordError(true);

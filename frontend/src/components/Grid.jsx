@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import TooltipHover from "./TooltipHover";
 
 function Grid(props) {
@@ -8,12 +8,16 @@ function Grid(props) {
   const gridValue = props.gridColor;
 
   return (
-    <div className="flex justify-center">
+    // Parent div:
+    // md:flex md:justify-center => center grid on md+ screens
+    // flex-row overflow-x-auto => horizontal scroll on mobile
+    <div className="flex md:justify-center md:items-center flex-row overflow-x-auto mb-8 w-full">
       <div
         className="grid"
         style={{
           gridTemplateColumns: "repeat(52, 15px)",
           gap: "3px",
+          minWidth: "832px", // 52*16 for 15px+1px border+gap, adjust as needed
         }}
       >
         {arr.map((_, index) => (
@@ -22,10 +26,11 @@ function Grid(props) {
             gridValue={gridValue}
             dateOfBirth={dob}
             index={index}
-          ></TooltipHover>
+          />
         ))}
       </div>
     </div>
   );
 }
+
 export default Grid;
