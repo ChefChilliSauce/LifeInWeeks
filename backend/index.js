@@ -3,6 +3,8 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import session from "express-session";
+import passport from "passport";
 
 const app = express();
 const port = 3000;
@@ -19,6 +21,16 @@ db.connect();
 
 app.use(express.json());
 app.use(cors());
+app.use(
+  session({
+    secret: process.env.SECRETKEY,
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post("/checkUserName", async (req, res) => {
   const username = req.body.username;
@@ -32,19 +44,27 @@ app.post("/checkUserName", async (req, res) => {
 app.post("/login", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const result = await db.query("SELECT * FROM users WHERE username=($1)", [
+  const response = await db.query("SELECT * FROM users WHERE username=($1)", [
     username,
   ]);
-  const passwordStored = result.rows[0].password_hash;
+  const passwordStored = response.rows[0].password_hash;
   bcrypt.compare(password, passwordStored, (err, result) => {
-    console.log(result);
+    const userObj = {
+      username: username,
+      fullName: response.rows[0].name,
+      DOB: response.rows[0].full_date_of_birth,
+      date: response.rows[0].birth_day,
+      month: response.rows[0].birth_month,
+      year: response.rows[0].birth_year,
+      specialDates: response.rows[0].special_dates,
+    };
     if (err) {
       console.log(err);
     } else {
       if (result) {
-        res.json({ result });
+        res.json({ result: true, user: userObj });
       } else {
-        res.json({ result });
+        res.json({ result: false });
       }
     }
   });
@@ -57,13 +77,52 @@ app.post("/signup", async (req, res) => {
     if (err) {
       console.log(err);
     } else {
-      const result = await db.query(
-        "INSERT INTO users (username, password_hash) VALUES ($1, $2)",
+      const response = await db.query(
+        "INSERT INTO users (username, password_hash) VALUES ($1, $2)RETURNING *",
         [username, hash]
       );
-      res.json({ result });
+      const userObj = {
+        username: username,
+        fullName: response.rows[0].name,
+        DOB: response.rows[0].full_date_of_birth,
+        date: response.rows[0].birth_day,
+        month: response.rows[0].birth_month,
+        year: response.rows[0].birth_year,
+        specialDates: response.rows[0].special_dates,
+      };
+      if (err) {
+        console.log(err);
+      } else {
+        if (response) {
+          res.json({ result: true, user: userObj });
+        } else {
+          res.json({ result: false });
+        }
+      }
     }
   });
+});
+
+app.post("/setDOB", async (req, res) => {
+  const username = req.body.username;
+  const dob = req.body.dob;
+  const year = req.body.year;
+  const month = req.body.month;
+  const day = req.body.day;
+  const result = await db.query(
+    "UPDATE users SET full_date_of_birth = $1, birth_year = $2, birth_month = $3, birth_day = $4 WHERE username = $5 RETURNING *",
+    [dob, year, month, day, username]
+  );
+  const userObj = {
+    username: result.rows[0].username,
+    fullName: result.rows[0].name,
+    DOB: result.rows[0].full_date_of_birth,
+    date: result.rows[0].birth_day,
+    month: result.rows[0].birth_month,
+    year: result.rows[0].birth_year,
+    specialDates: result.rows[0].special_dates,
+  };
+  res.json({ user: userObj });
 });
 
 app.listen(port, () => {

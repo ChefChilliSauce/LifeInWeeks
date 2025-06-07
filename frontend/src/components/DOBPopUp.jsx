@@ -9,31 +9,50 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
+import axios from "axios";
 
 function DobPopUp(props) {
   const [open, setOpen] = useState(true);
   const [dob, setDob] = useState(null);
-  let formattedDob = 0;
+  const [dobError, setDobError] = useState(false); // <-- ADD ERROR STATE
+  const currentUser = props.data;
 
   const handleClose = () => {
     setOpen(false);
     if (dob) {
-      formattedDob = dayjs(dob).format("DD/MM/YYYY");
+      const formattedDob = dayjs(dob).format("YYYY-MM-DD");
+      const year = dayjs(dob).year();
+      const month = dayjs(dob).month() + 1;
+      const day = dayjs(dob).date();
+      axios
+        .post("http://localhost:3000/setDOB", {
+          username: currentUser.username,
+          dob: formattedDob,
+          year: year,
+          month: month,
+          day: day,
+        })
+        .then(function (response) {
+          props.currentUser(response.data.user);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    const dateBirth = dob ? dob.startOf("day").toDate() : null;
-    const dateToday = dayjs().startOf("day").toDate();
-    const totalWeeks = dateBirth
-      ? Math.floor((dateToday - dateBirth) / 1000 / 60 / 60 / 24 / 7)
-      : 0;
-    props.onConfirm(totalWeeks);
-    props.onConfirmDate(dob ? dob.toDate() : null);
   };
 
+  // Handle date selection (clear error if set)
   function HandleDate(newDate) {
     setDob(newDate);
+    if (dobError) setDobError(false); // <-- CLEAR ERROR IF DATE SELECTED
   }
+
   function HandleButton(event) {
-    event.preventDefault;
+    event.preventDefault();
+    if (!dob) {
+      setDobError(true); // <-- SET ERROR IF DOB NOT PICKED
+      return;
+    }
     handleClose();
   }
 
@@ -51,6 +70,12 @@ function DobPopUp(props) {
                 onChange={HandleDate}
                 label="Date of Birth"
                 value={dob}
+                slotProps={{
+                  textField: {
+                    error: dobError,
+                    helperText: dobError ? "Date of Birth is required" : "",
+                  },
+                }}
               />
             </div>
           </LocalizationProvider>
