@@ -37,6 +37,7 @@ app.post("/login", async (req, res) => {
   ]);
   const passwordStored = result.rows[0].password_hash;
   bcrypt.compare(password, passwordStored, (err, result) => {
+    console.log(result);
     if (err) {
       console.log(err);
     } else {
@@ -60,7 +61,7 @@ app.post("/signup", async (req, res) => {
         "INSERT INTO users (username, password_hash) VALUES ($1, $2)",
         [username, hash]
       );
-      console.log(result);
+      res.json({ result });
     }
   });
 });

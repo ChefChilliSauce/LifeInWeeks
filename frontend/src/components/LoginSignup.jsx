@@ -53,118 +53,104 @@ function LoginSignup(props) {
     if (password.length < 8) {
       setPasswordFieldErrorEmpty(true);
       return;
-    }
-
-    if (password === "qwerty12") {
-      props.confirm(true);
-      // Uncomment and use axios here for backend check
     } else {
-      SetIncorrectPasswordError(true);
+      axios
+        .post("http://localhost:3000/login", {
+          username: username,
+          password: password,
+        })
+        .then(function (response) {
+          if (response.data.result) {
+            props.confirm(true);
+          } else {
+            SetIncorrectPasswordError(true);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
-  // axios
-  //   .post("http://localhost:3000/login", {
-  //     username: username,
-  //     password: password,
-  //   })
-  //   .then(function (response) {
-  //     if (response) {
-  //       props.confirm(true);
-  //     } else {
-  //       setPasswordStatus(false);
-  //     }
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //   });
 
   function HandleContinueLoginClick() {
-    if (username.length >= 0 && username.length < 6) {
+    if (username.length < 6) {
       setUsernameFieldErrorEmpty(true);
     } else {
-      setPasswordField(true);
-      setUsernameField(false);
-      setUsernameFieldErrorEmpty(false);
-      setPageLogin(true);
-      // axios
-      //   .post("http://localhost:3000/checkUserName", {
-      //     username: username,
-      //   })
-      //   .then(function (response) {
-      //     if (!response.data.exists) {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
-      //       setPageLogin(false);
-      //     } else if (response.data.exists) {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
-      //       setPageLogin(true);
-      //     } else {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
+      axios
+        .post("http://localhost:3000/checkUserName", {
+          username: username,
+        })
+        .then(function (response) {
+          if (!response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(false);
+          } else if (response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(true);
+          } else {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    // }
   }
 
   function HandleProceedSignupClick() {
-    if (password.length >= 0 && password.length < 8) {
+    if (password.length < 8) {
       setPasswordFieldErrorEmpty(true);
     } else {
-      // axios
-      //   .post("http://localhost:3000/signup", {
-      //     username: username,
-      //     password: password,
-      //   })
-      //   .then(function (response) {
-      //     if (response.data.exists) {
-      //       props.confirm(true);
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+      axios
+        .post("http://localhost:3000/signup", {
+          username: username,
+          password: password,
+        })
+        .then(function (response) {
+          if (response) {
+            props.confirm(true);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 
   function HandleContinueSignupClick() {
-    if (username.length >= 0 && username.length < 6) {
+    if (username.length < 6) {
       setUsernameFieldErrorEmpty(true);
     } else {
-      setPasswordField(true);
-      setUsernameField(false);
-      setUsernameFieldErrorEmpty(false);
-      setPageLogin(false);
-      // axios
-      //   .post("http://localhost:3000/checkUserName", {
-      //     username: username,
-      //   })
-      //   .then(function (response) {
-      //     if (response.data.exists) {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
-      //       setPageLogin(true);
-      //     } else if (!response.data.exists) {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
-      //       setPageLogin(false);
-      //     } else {
-      //       setPasswordField(true);
-      //       setUsernameField(false);
-      //       setUsernameFieldErrorEmpty(false);
-      //     }
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error);
-      //   });
+      axios
+        .post("http://localhost:3000/checkUserName", {
+          username: username,
+        })
+        .then(function (response) {
+          if (response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(true);
+          } else if (!response.data.exists) {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+            setPageLogin(false);
+          } else {
+            setPasswordField(true);
+            setUsernameField(false);
+            setUsernameFieldErrorEmpty(false);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 

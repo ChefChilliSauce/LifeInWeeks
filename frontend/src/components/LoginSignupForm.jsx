@@ -5,16 +5,11 @@ import InputTextField from "./InputTextField";
 import LoginSignupContinueButton from "./LoginSignupContinueButton";
 
 function LoginSignupForm(props) {
-  function handleFormSubmit(event) {
-    event.preventDefault();
-    props.handleFormSubmit();
-  }
-
   return (
     <div className="select-none">
       <h1>{props.isPasswordField ? props.heading2 : props.heading1} </h1>
       <Box
-        onSubmit={handleFormSubmit}
+        onSubmit={(event) => event.preventDefault()}
         component="form"
         sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
         noValidate
