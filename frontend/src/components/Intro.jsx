@@ -2,8 +2,8 @@ import React from "react";
 
 function Intro(props) {
   return (
-    <section className="max-w-3xl mx-auto px-6 py-8 mb-8">
-      <h1 className="text-2xl font-bold mb-2 tracking-tight select-none text-gray-900 ">
+    <section className="max-w-3xl mx-auto px-6 py-8 mb-8 select-none">
+      <h1 className="text-2xl font-bold mb-2 tracking-tight text-gray-900 ">
         Mapping My Life, Week by Week
       </h1>
       <p className="text-lg text-gray-700 ">

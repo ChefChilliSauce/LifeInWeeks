@@ -18,6 +18,10 @@ function App() {
   const [visibleDate, setVisibleDate] = useState(0);
   const [open, setOpen] = useState(false);
 
+  function Logout() {
+    // setHomepage(false);
+  }
+
   function OpenSetMilestone() {
     setOpen(true);
   }
@@ -61,7 +65,7 @@ function App() {
       ) : null}
       {gridDisplay ? (
         <div>
-          <Header click={OpenSetMilestone} />
+          <Header clickAddMilestone={OpenSetMilestone} clickLogout={Logout} />
           <SpecialDatesPopUp
             open={open}
             close={CloseSetMilestone}

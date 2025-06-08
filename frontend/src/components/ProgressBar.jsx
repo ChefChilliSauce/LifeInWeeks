@@ -27,7 +27,7 @@ function ProgressBar(props) {
   const difference = props.difference;
   let value = Number(((difference / averageLifeWeeks) * 100).toFixed(2));
   return (
-    <div className="max-w-3xl mx-auto px-6 mb-8">
+    <div className="max-w-3xl mx-auto px-6 mb-8 select-none">
       <div className="relative">
         <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-white text-base sm:text-lg z-10 pointer-events-none">
           {value}%<span className="hidden sm:inline"> of Life lived</span>
