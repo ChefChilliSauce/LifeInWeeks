@@ -6,16 +6,19 @@ import LoginSignupContinueButton from "./LoginSignupContinueButton";
 
 function LoginSignupForm(props) {
   return (
-    <div className="select-none">
-      <h1>{props.isPasswordField ? props.heading2 : props.heading1} </h1>
+    <div className="select-none w-full flex flex-col items-center">
+      <h1 className="text-3xl text-center mb-6 w-4/5 mx-auto font-normal">
+        {props.isPasswordField ? props.heading2 : props.heading1}
+      </h1>
+
       <Box
         onSubmit={(event) => event.preventDefault()}
         component="form"
-        sx={{ "& > :not(style)": { m: 1, width: "25ch" } }}
+        className="w-full max-w-sm mx-auto flex flex-col items-center"
         noValidate
         autoComplete="off"
       >
-        <Stack spacing={2} direction="column">
+        <Stack spacing={2} direction="column" className="w-full">
           <InputTextField
             isUsernameFieldErrorEmpty={props.isUsernameFieldErrorEmpty}
             isUsernameField={props.isUsernameField}
@@ -23,6 +26,7 @@ function LoginSignupForm(props) {
             HandleUsernameFieldChange={props.HandleUsernameFieldChange}
             username={props.username}
             activeUserField={props.activeUserField}
+            inputStyle={{ height: 44, borderRadius: 9999 }}
           />
           {props.isPasswordField ? (
             <InputTextField
@@ -37,25 +41,23 @@ function LoginSignupForm(props) {
               HandlePasswordFieldChange={props.HandlePasswordFieldChange}
               password={props.password}
               activePassField={props.activePassField}
+              inputStyle={{ height: 44, borderRadius: 9999 }}
             />
           ) : null}
         </Stack>
-        <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
-          {props.isPasswordField ? (
-            <LoginSignupContinueButton
-              type="submit"
-              ButtonText={props.ButtonText}
-              HandleProceedButtonClick={props.HandleProceedButtonClick}
-            />
-          ) : (
-            <LoginSignupContinueButton
-              type="submit"
-              ButtonText={props.ButtonText}
-              HandleProceedButtonClick={props.HandleContinueButtonClick}
-            />
-          )}
+        <Stack spacing={2} direction="column" className="w-full mt-4">
+          <LoginSignupContinueButton
+            type="submit"
+            ButtonText={props.ButtonText}
+            HandleProceedButtonClick={
+              props.isPasswordField
+                ? props.HandleProceedButtonClick
+                : props.HandleContinueButtonClick
+            }
+            className="w-full h-11 rounded-full bg-black text-white text-base"
+          />
         </Stack>
-        <p>
+        <p className="mt-6 text-center">
           {props.paragraph}{" "}
           <a
             className="text-[#0066DE] hover:underline"

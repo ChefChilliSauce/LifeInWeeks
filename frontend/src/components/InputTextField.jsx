@@ -25,6 +25,7 @@ function InputTextField(props) {
     <div>
       {props.activeUserField == "userField" ? (
         <TextField
+          fullWidth
           inputRef={inputRef}
           error={props.isUsernameFieldErrorEmpty ? true : null}
           helperText={
@@ -55,7 +56,7 @@ function InputTextField(props) {
               borderRadius: "50px",
             },
           }}
-          id="outlined-basic"
+          id="username"
           label="Username"
           variant="outlined"
           value={props.username}
@@ -63,6 +64,7 @@ function InputTextField(props) {
       ) : null}
       {props.activePassField == "passField" ? (
         <TextField
+          fullWidth
           inputRef={inputRef}
           error={props.isPasswordStatus || props.isPasswordFieldErrorEmpty}
           helperText={
@@ -92,7 +94,7 @@ function InputTextField(props) {
               borderRadius: "50px",
             },
           }}
-          id="outlined-basic"
+          id="password"
           label="Password"
           variant="outlined"
           value={props.password}

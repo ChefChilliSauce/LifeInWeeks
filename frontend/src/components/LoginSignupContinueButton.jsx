@@ -5,17 +5,18 @@ function LoginSignupContinueButton(props) {
   return (
     <Button
       type={props.type}
+      fullWidth // remove if you want to control width via container
       onClick={() => {
-        {
-          props.HandleProceedButtonClick();
-        }
+        props.HandleProceedButtonClick();
       }}
       variant="contained"
       sx={{
-        borderRadius: 30,
-        minWidth: 200,
+        borderRadius: "9999px", // perfect pill
+        height: "44px", // matches your input field height
         textTransform: "none",
         backgroundColor: "#131313",
+        fontSize: "1rem",
+        boxShadow: "none",
         "&:hover": {
           backgroundColor: "#333333",
         },

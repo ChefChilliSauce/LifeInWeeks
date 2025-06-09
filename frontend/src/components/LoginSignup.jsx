@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import LoginSignupButtons from "./LoginSigupButtons";
 import LoginSignupForm from "./LoginSignupForm";
 import DobPopUp from "./DOBPopUp";
-import Stack from "@mui/material/Stack";
+import HeaderAuthDark from "./HeaderAuthDark";
+import HeaderAuthLight from "./HeaderAuthLight";
+import FooterAuthDark from "./FooterAuthDark";
+import FooterAuthLight from "./FooterAuthLight";
 import axios from "axios";
 
 function LoginSignup(props) {
@@ -177,12 +180,15 @@ function LoginSignup(props) {
   return (
     <>
       {!blankPage ? (
-        <div>
-          {homepage ? (
-            <div className="min-h-screen flex items-center justify-center bg-black">
-              <Stack spacing={2} direction="column">
-                <h1 className="text-white text-3xl text-center">Get started</h1>
-                <Stack spacing={2} direction={{ xs: "column", sm: "row" }}>
+        homepage ? (
+          <div className="min-h-screen flex flex-col bg-black">
+            <HeaderAuthDark />
+            <main className="flex-grow flex items-center justify-center px-4">
+              <div className="w-full max-w-md">
+                <h1 className="text-white text-3xl text-center mb-8">
+                  Get started
+                </h1>
+                <div className="flex flex-col md:flex-row gap-4 md:gap-6 justify-center">
                   <LoginSignupButtons
                     HandleLoginClick={HandleLoginClick}
                     textLabel="Log in"
@@ -191,64 +197,69 @@ function LoginSignup(props) {
                     HandleLoginClick={HandleSignupClick}
                     textLabel="Sign up"
                   />
-                </Stack>
-              </Stack>
-            </div>
-          ) : null}
-          <div className="min-h-screen flex flex-col items-center justify-center">
-            {pageLogin && !homepage ? (
-              <LoginSignupForm
-                heading1={"Welcome back"}
-                heading2={"Enter your password"}
-                paragraph={"Dont have an account?"}
-                details={"Sign up"}
-                isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
-                isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
-                isPasswordStatus={incorrectPasswordError}
-                isUsernameField={usernameField}
-                HandleEditButtonClick={HandleLoginClick}
-                HandleUsernameFieldChange={HandleUsernameChange}
-                username={username}
-                activeUserField={"userField"}
-                activePassField={"passField"}
-                ButtonText={"Continue"}
-                HandleContinueButtonClick={HandleContinueLoginClick}
-                HandleProceedButtonClick={HandleProceedLoginClick}
-                isPasswordField={passwordField}
-                isShowPassword={showPassword}
-                handleClickShowPasswordButton={handleClickShowPassword}
-                HandlePasswordFieldChange={HandlePasswordChange}
-                password={password}
-                HandleChangeButtonClick={HandleSignupClick}
-              />
-            ) : null}
-            {!pageLogin && !homepage ? (
-              <LoginSignupForm
-                heading1={"Create an account"}
-                heading2={"Create an password"}
-                paragraph={"Already have an account?"}
-                details={"Log in"}
-                isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
-                isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
-                isUsernameField={usernameField}
-                HandleEditButtonClick={HandleSignupClick}
-                HandleUsernameFieldChange={HandleUsernameChange}
-                username={username}
-                activeUserField={"userField"}
-                activePassField={"passField"}
-                ButtonText={"Continue"}
-                HandleContinueButtonClick={HandleContinueSignupClick}
-                HandleProceedButtonClick={HandleProceedSignupClick}
-                isPasswordField={passwordField}
-                isShowPassword={showPassword}
-                handleClickShowPasswordButton={handleClickShowPassword}
-                HandlePasswordFieldChange={HandlePasswordChange}
-                password={password}
-                HandleChangeButtonClick={HandleLoginClick}
-              />
-            ) : null}
+                </div>
+              </div>
+            </main>
+            <FooterAuthDark />
           </div>
-        </div>
+        ) : (
+          <div className="min-h-screen flex flex-col bg-white">
+            <HeaderAuthLight />
+            <main className="flex-grow flex items-center justify-center">
+              {pageLogin ? (
+                <LoginSignupForm
+                  heading1={"Welcome back"}
+                  heading2={"Enter your password"}
+                  paragraph={"Dont have an account?"}
+                  details={"Sign up"}
+                  isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
+                  isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
+                  isPasswordStatus={incorrectPasswordError}
+                  isUsernameField={usernameField}
+                  HandleEditButtonClick={HandleLoginClick}
+                  HandleUsernameFieldChange={HandleUsernameChange}
+                  username={username}
+                  activeUserField={"userField"}
+                  activePassField={"passField"}
+                  ButtonText={"Continue"}
+                  HandleContinueButtonClick={HandleContinueLoginClick}
+                  HandleProceedButtonClick={HandleProceedLoginClick}
+                  isPasswordField={passwordField}
+                  isShowPassword={showPassword}
+                  handleClickShowPasswordButton={handleClickShowPassword}
+                  HandlePasswordFieldChange={HandlePasswordChange}
+                  password={password}
+                  HandleChangeButtonClick={HandleSignupClick}
+                />
+              ) : (
+                <LoginSignupForm
+                  heading1={"Create an account"}
+                  heading2={"Create a password"}
+                  paragraph={"Already have an account?"}
+                  details={"Log in"}
+                  isUsernameFieldErrorEmpty={usernameFieldErrorEmpty}
+                  isPasswordFieldErrorEmpty={passwordFieldErrorEmpty}
+                  isUsernameField={usernameField}
+                  HandleEditButtonClick={HandleSignupClick}
+                  HandleUsernameFieldChange={HandleUsernameChange}
+                  username={username}
+                  activeUserField={"userField"}
+                  activePassField={"passField"}
+                  ButtonText={"Continue"}
+                  HandleContinueButtonClick={HandleContinueSignupClick}
+                  HandleProceedButtonClick={HandleProceedSignupClick}
+                  isPasswordField={passwordField}
+                  isShowPassword={showPassword}
+                  handleClickShowPasswordButton={handleClickShowPassword}
+                  HandlePasswordFieldChange={HandlePasswordChange}
+                  password={password}
+                  HandleChangeButtonClick={HandleLoginClick}
+                />
+              )}
+            </main>
+            <FooterAuthLight />
+          </div>
+        )
       ) : (
         <div>
           {dobPopUp ? (
