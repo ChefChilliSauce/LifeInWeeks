@@ -15,7 +15,6 @@ function NotFound() {
           backgroundSize: "cover",
         }}
       >
-        {/* Main Text Section */}
         <div className="z-10 max-w-xl px-8">
           <h1 className="text-5xl md:text-7xl font-extrabold text-gray-700 mb-2">
             404
@@ -34,7 +33,6 @@ function NotFound() {
             Double-check the URL or go back to your timeline.
           </p>
         </div>
-        {/* Avatar */}
         <div className="z-10 flex-shrink-0 flex items-center justify-center mt-8 md:mt-0 md:ml-12">
           <img
             src="/Avatar.png"
@@ -43,7 +41,6 @@ function NotFound() {
             draggable={false}
           />
         </div>
-        {/* Optional: semi-transparent overlay */}
         <div className="absolute inset-0 bg-[#fdf6ec]/70 pointer-events-none" />
       </main>
       <FooterTOSP />
