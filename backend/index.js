@@ -155,6 +155,38 @@ app.post("/AddSpecialMilestone", async (req, res) => {
   res.json({ user: userObj });
 });
 
+app.post("/RemoveSpecialMilestone", async (req, res) => {
+  const username = req.body.username;
+  const week = req.body.week;
+
+  const result = await db.query(
+    `
+    UPDATE users
+    SET special_dates = (
+      SELECT COALESCE(jsonb_agg(elem), '[]'::jsonb)
+      FROM jsonb_array_elements(special_dates) AS elem
+      WHERE (elem->>'week')::int <> $1
+    )
+    WHERE username = $2
+    RETURNING *;
+    `,
+    [week, username]
+  );
+
+  const user = result.rows[0];
+  const userObj = {
+    username: user.username,
+    fullName: user.name,
+    DOB: user.full_date_of_birth,
+    date: user.birth_day,
+    month: user.birth_month,
+    year: user.birth_year,
+    specialDates: user.special_dates,
+  };
+
+  res.json({ user: userObj });
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

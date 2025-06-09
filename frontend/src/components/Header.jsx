@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 function Header(props) {
   return (
@@ -11,6 +11,12 @@ function Header(props) {
             onClick={props.clickAddMilestone}
           >
             Add Milestone
+          </a>
+          <a
+            className="cursor-pointer hover:underline"
+            onClick={props.clickRemoveMilestone}
+          >
+            Remove Milestone
           </a>
           <a
             className="cursor-pointer hover:underline"

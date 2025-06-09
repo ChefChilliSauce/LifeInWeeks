@@ -6,6 +6,7 @@ import Intro from "./components/Intro";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import SpecialDatesPopUp from "./components/SpecialDatesPopUp";
+import SpecialDatesRemovePopUp from "./components/SpecialDatesRemovePopUp";
 
 function App() {
   const [dateToday, setDateToday] = useState(null);
@@ -16,18 +17,29 @@ function App() {
   const [homepage, setHomepage] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
   const [visibleDate, setVisibleDate] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [removeOpen, setRemoveOpen] = useState(false);
 
   function Logout() {
-    // setHomepage(false);
+    setHomepage(false);
+    setCurrentUser({});
+    setGridDisplay(false);
   }
 
   function OpenSetMilestone() {
-    setOpen(true);
+    setAddOpen(true);
   }
 
   function CloseSetMilestone() {
-    setOpen(false);
+    setAddOpen(false);
+  }
+
+  function OpenRemoveMilestone() {
+    setRemoveOpen(true);
+  }
+
+  function CloseRemoveMilestone() {
+    setRemoveOpen(false);
   }
 
   function VisibleHomePage(value) {
@@ -65,10 +77,20 @@ function App() {
       ) : null}
       {gridDisplay ? (
         <div>
-          <Header clickAddMilestone={OpenSetMilestone} clickLogout={Logout} />
+          <Header
+            clickAddMilestone={OpenSetMilestone}
+            clickLogout={Logout}
+            clickRemoveMilestone={OpenRemoveMilestone}
+          />
           <SpecialDatesPopUp
-            open={open}
+            open={addOpen}
             close={CloseSetMilestone}
+            data={currentUser}
+            newValue={LogCurrentUser}
+          />
+          <SpecialDatesRemovePopUp
+            open={removeOpen}
+            close={CloseRemoveMilestone}
             data={currentUser}
             newValue={LogCurrentUser}
           />
