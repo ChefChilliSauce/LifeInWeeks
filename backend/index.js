@@ -51,7 +51,6 @@ app.post("/login", async (req, res) => {
   bcrypt.compare(password, passwordStored, (err, result) => {
     const userObj = {
       username: username,
-      fullName: response.rows[0].name,
       DOB: response.rows[0].full_date_of_birth,
       date: response.rows[0].birth_day,
       month: response.rows[0].birth_month,
@@ -83,7 +82,6 @@ app.post("/signup", async (req, res) => {
       );
       const userObj = {
         username: username,
-        fullName: response.rows[0].name,
         DOB: response.rows[0].full_date_of_birth,
         date: response.rows[0].birth_day,
         month: response.rows[0].birth_month,
@@ -115,7 +113,6 @@ app.post("/setDOB", async (req, res) => {
   );
   const userObj = {
     username: result.rows[0].username,
-    fullName: result.rows[0].name,
     DOB: result.rows[0].full_date_of_birth,
     date: result.rows[0].birth_day,
     month: result.rows[0].birth_month,
@@ -145,8 +142,6 @@ app.post("/AddSpecialMilestone", async (req, res) => {
 
   const userObj = {
     username: result.rows[0].username,
-    fullName: result.rows[0].name,
-    DOB: result.rows[0].full_date_of_birth,
     date: result.rows[0].birth_day,
     month: result.rows[0].birth_month,
     year: result.rows[0].birth_year,
@@ -176,7 +171,6 @@ app.post("/RemoveSpecialMilestone", async (req, res) => {
   const user = result.rows[0];
   const userObj = {
     username: user.username,
-    fullName: user.name,
     DOB: user.full_date_of_birth,
     date: user.birth_day,
     month: user.birth_month,
@@ -185,6 +179,31 @@ app.post("/RemoveSpecialMilestone", async (req, res) => {
   };
 
   res.json({ user: userObj });
+});
+
+app.get("/PublicProfile/:username", async (req, res) => {
+  const username = req.params.username;
+
+  try {
+    const result = await db.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
+    if (result.rows.length > 0) {
+      const user = result.rows[0];
+      const userObj = {
+        username: user.username,
+        date: user.birth_day,
+        month: user.birth_month,
+        year: user.birth_year,
+        specialDates: user.special_dates,
+      };
+      res.json({ result: true, user: userObj });
+    } else {
+      res.json({ result: false });
+    }
+  } catch (err) {
+    res.json({ result: false, error: err.message });
+  }
 });
 
 app.listen(port, () => {

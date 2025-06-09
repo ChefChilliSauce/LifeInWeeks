@@ -65,11 +65,12 @@ function SpecialDatesRemovePopUp(props) {
           },
         }}
       >
-        <DialogTitle className="select-none">Special Dates</DialogTitle>
+        <DialogTitle className="select-none">Remove a Milestone</DialogTitle>
         <DialogContent>
           <DialogContentText className="select-none">
-            Enter the week number (hover over the square to find grid number) to
-            remove the milestone.
+            Enter the week number of the milestone you want to remove (you can
+            hover over any grid square to see its week number). Once removed,
+            that milestone will disappear from your timeline.
           </DialogContentText>
           <TextField
             error={weekError ? true : null}

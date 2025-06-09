@@ -78,11 +78,14 @@ function SpecialDatesPopUp(props) {
           },
         }}
       >
-        <DialogTitle className="select-none">Special Dates</DialogTitle>
+        <DialogTitle className="select-none">Special Milestones</DialogTitle>
         <DialogContent>
           <DialogContentText className="select-none">
-            Add the week number (hover over the square to find grid number) and
-            the message to make it visible.
+            Pick a week number (hover over any grid square to see its week
+            number), then write a short message to mark a meaningful moment from
+            that week. Note: You can only add one milestone per week—make it
+            count! Your milestone will be highlighted on your timeline for easy
+            reflection.
           </DialogContentText>
           <TextField
             error={weekError ? true : null}

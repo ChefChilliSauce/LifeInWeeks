@@ -41,16 +41,15 @@ function DobPopUp(props) {
     }
   };
 
-  // Handle date selection (clear error if set)
   function HandleDate(newDate) {
     setDob(newDate);
-    if (dobError) setDobError(false); // <-- CLEAR ERROR IF DATE SELECTED
+    if (dobError) setDobError(false);
   }
 
   function HandleButton(event) {
     event.preventDefault();
     if (!dob) {
-      setDobError(true); // <-- SET ERROR IF DOB NOT PICKED
+      setDobError(true);
       return;
     }
     handleClose();

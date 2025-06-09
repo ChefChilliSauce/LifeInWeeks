@@ -4,16 +4,19 @@ function Intro(props) {
   return (
     <section className="max-w-3xl mx-auto px-6 py-8 mb-8 select-none">
       <h1 className="text-2xl font-bold mb-2 tracking-tight text-gray-900 ">
-        Mapping My Life, Week by Week
+        Your Life, One Week at a Time
       </h1>
       <p className="text-lg text-gray-700 ">
-        This page is my personal timeline—every square you see below stands for
-        one week of my life since {props.date}. The green squares show the weeks
-        I’ve already lived; the gray ones represent the future that’s still open
-        to me. Key milestones—moments that shaped my journey—are highlighted for
-        quick reflection. It’s a simple way to zoom out, see how far I’ve come,
-        and remind myself just how many stories, memories, and opportunities fit
-        into a lifetime. <br />
+        This is your personal life map, starting on {props.date}—the day your
+        story began. Every square you see below marks a week you’ve lived, and
+        together they paint the full picture of your journey so far. Green
+        squares highlight the weeks you’ve experienced, while gray ones await
+        the stories you’ll write in the future. Special milestones you’ve chosen
+        are illuminated along the way, capturing your biggest wins, lessons, and
+        memories. Pause to reflect, zoom out for perspective, and let this
+        timeline remind you just how much you’ve accomplished and how much
+        possibility lies ahead. Your life is a collection of moments—this page
+        makes every one visible. <br />
         <b>
           On touchscreens, press and hold the highlighted squares to see more
           details about those milestones.
